@@ -22,6 +22,22 @@ export const TodoItem = ({ todo, categories, onToggle, onUpdate, onDelete }: Pro
   const isOverdue = todo.dueDate && !todo.completed && new Date(todo.dueDate) < new Date();
   const category = categories.find(c => c.id === todo.categoryId);
 
+  // 期限までの日数を計算
+  const getDaysUntilDue = () => {
+    if (!todo.dueDate || todo.completed) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dueDate = new Date(todo.dueDate);
+    dueDate.setHours(0, 0, 0, 0);
+    const diffTime = dueDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
+  const daysUntilDue = getDaysUntilDue();
+  const isApproaching = daysUntilDue !== null && daysUntilDue >= 0 && daysUntilDue <= 3;
+  const isUrgent = daysUntilDue !== null && daysUntilDue >= 0 && daysUntilDue <= 1;
+
   const handleSave = () => {
     if (!editTitle.trim()) return;
     onUpdate(todo.id, {
@@ -98,7 +114,7 @@ export const TodoItem = ({ todo, categories, onToggle, onUpdate, onDelete }: Pro
   }
 
   return (
-    <div className={`${styles.item} ${todo.completed ? styles.completed : ''} ${isOverdue ? styles.overdue : ''}`}>
+    <div className={`${styles.item} ${todo.completed ? styles.completed : ''} ${isOverdue ? styles.overdue : ''} ${isUrgent ? styles.urgent : ''} ${isApproaching ? styles.approaching : ''}`}>
       <div className={styles.checkbox}>
         <input
           type="checkbox"
@@ -126,7 +142,7 @@ export const TodoItem = ({ todo, categories, onToggle, onUpdate, onDelete }: Pro
             {PRIORITY_LABELS[todo.priority]}
           </span>
           {todo.dueDate && (
-            <span className={`${styles.dueDate} ${isOverdue ? styles.dueDateOverdue : ''}`}>
+            <span className={`${styles.dueDate} ${isOverdue ? styles.dueDateOverdue : ''} ${isUrgent ? styles.dueDateUrgent : ''} ${isApproaching ? styles.dueDateApproaching : ''}`}>
               {formatDate(todo.dueDate)}
             </span>
           )}
