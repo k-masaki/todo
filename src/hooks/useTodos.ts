@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import type { Todo, TodoFilters, Category, Priority } from '../types/todo';
+import type { Todo, TodoFilters, Priority } from '../types/todo';
 import { loadTodos, saveTodos, generateId } from '../utils/storage';
 
 const PRIORITY_ORDER: Record<Priority, number> = {
@@ -12,7 +12,7 @@ export const useTodos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filters, setFilters] = useState<TodoFilters>({
     status: 'all',
-    category: 'all',
+    categoryId: 'all',
     priority: 'all',
     sortBy: 'createdAt',
   });
@@ -27,7 +27,7 @@ export const useTodos = () => {
 
   const addTodo = useCallback((
     title: string,
-    category: Category,
+    categoryId: string,
     priority: Priority,
     description?: string,
     dueDate?: string
@@ -38,7 +38,7 @@ export const useTodos = () => {
       title,
       description,
       completed: false,
-      category,
+      categoryId,
       priority,
       dueDate,
       createdAt: now,
@@ -82,8 +82,8 @@ export const useTodos = () => {
     }
 
     // Filter by category
-    if (filters.category !== 'all') {
-      result = result.filter(todo => todo.category === filters.category);
+    if (filters.categoryId !== 'all') {
+      result = result.filter(todo => todo.categoryId === filters.categoryId);
     }
 
     // Filter by priority

@@ -1,31 +1,33 @@
 import { useState } from 'react';
-import type { Todo, Category, Priority } from '../types/todo';
-import { CATEGORY_LABELS, PRIORITY_LABELS } from '../types/todo';
+import type { Todo, Priority, CategoryItem } from '../types/todo';
+import { PRIORITY_LABELS } from '../types/todo';
 import styles from './TodoItem.module.css';
 
 interface Props {
   todo: Todo;
+  categories: CategoryItem[];
   onToggle: (id: string) => void;
   onUpdate: (id: string, updates: Partial<Omit<Todo, 'id' | 'createdAt'>>) => void;
   onDelete: (id: string) => void;
 }
 
-export const TodoItem = ({ todo, onToggle, onUpdate, onDelete }: Props) => {
+export const TodoItem = ({ todo, categories, onToggle, onUpdate, onDelete }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(todo.title);
   const [editDescription, setEditDescription] = useState(todo.description || '');
-  const [editCategory, setEditCategory] = useState(todo.category);
+  const [editCategoryId, setEditCategoryId] = useState(todo.categoryId);
   const [editPriority, setEditPriority] = useState(todo.priority);
   const [editDueDate, setEditDueDate] = useState(todo.dueDate || '');
 
   const isOverdue = todo.dueDate && !todo.completed && new Date(todo.dueDate) < new Date();
+  const category = categories.find(c => c.id === todo.categoryId);
 
   const handleSave = () => {
     if (!editTitle.trim()) return;
     onUpdate(todo.id, {
       title: editTitle.trim(),
       description: editDescription.trim() || undefined,
-      category: editCategory,
+      categoryId: editCategoryId,
       priority: editPriority,
       dueDate: editDueDate || undefined,
     });
@@ -35,7 +37,7 @@ export const TodoItem = ({ todo, onToggle, onUpdate, onDelete }: Props) => {
   const handleCancel = () => {
     setEditTitle(todo.title);
     setEditDescription(todo.description || '');
-    setEditCategory(todo.category);
+    setEditCategoryId(todo.categoryId);
     setEditPriority(todo.priority);
     setEditDueDate(todo.dueDate || '');
     setIsEditing(false);
@@ -65,11 +67,11 @@ export const TodoItem = ({ todo, onToggle, onUpdate, onDelete }: Props) => {
           />
           <div className={styles.editOptions}>
             <select
-              value={editCategory}
-              onChange={e => setEditCategory(e.target.value as Category)}
+              value={editCategoryId}
+              onChange={e => setEditCategoryId(e.target.value)}
             >
-              {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
-                <option key={value} value={value}>{label}</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
             <select
@@ -114,8 +116,11 @@ export const TodoItem = ({ todo, onToggle, onUpdate, onDelete }: Props) => {
           <p className={styles.description}>{todo.description}</p>
         )}
         <div className={styles.meta}>
-          <span className={`${styles.category} ${styles[todo.category]}`}>
-            {CATEGORY_LABELS[todo.category]}
+          <span
+            className={styles.category}
+            style={{ backgroundColor: category?.color || '#95a5a6', color: '#fff' }}
+          >
+            {category?.name || '不明'}
           </span>
           <span className={`${styles.priority} ${styles[`priority-${todo.priority}`]}`}>
             {PRIORITY_LABELS[todo.priority]}

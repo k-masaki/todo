@@ -1,0 +1,159 @@
+.container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggleButton {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toggleButton:hover {
+  background: #e0e0e0;
+}
+
+.panel {
+  margin-top: 16px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.item {
+  padding: 8px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.viewRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.editRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.colorBadge {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.name {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.editBtn,
+.deleteBtn,
+.saveBtn,
+.cancelBtn,
+.addBtn {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.editBtn {
+  background: #e8f4fd;
+  color: #2980b9;
+}
+
+.deleteBtn {
+  background: #fdecea;
+  color: #e74c3c;
+}
+
+.deleteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.saveBtn {
+  background: #4a90d9;
+  color: #fff;
+}
+
+.cancelBtn {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.addBtn {
+  background: #2ecc71;
+  color: #fff;
+  padding: 8px 16px;
+}
+
+.addForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.input {
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #4a90d9;
+}
+
+.colorPicker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.colorOption {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.colorOption:hover {
+  transform: scale(1.1);
+}
+
+.colorOption.selected {
+  border-color: #333;
+}
+
+.editActions {
+  display: flex;
+  gap: 8px;
+}

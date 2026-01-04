@@ -1,15 +1,16 @@
-import type { Todo } from '../types/todo';
+import type { Todo, CategoryItem } from '../types/todo';
 import { TodoItem } from './TodoItem';
 import styles from './TodoList.module.css';
 
 interface Props {
   todos: Todo[];
+  categories: CategoryItem[];
   onToggle: (id: string) => void;
   onUpdate: (id: string, updates: Partial<Omit<Todo, 'id' | 'createdAt'>>) => void;
   onDelete: (id: string) => void;
 }
 
-export const TodoList = ({ todos, onToggle, onUpdate, onDelete }: Props) => {
+export const TodoList = ({ todos, categories, onToggle, onUpdate, onDelete }: Props) => {
   if (todos.length === 0) {
     return (
       <div className={styles.empty}>
@@ -24,6 +25,7 @@ export const TodoList = ({ todos, onToggle, onUpdate, onDelete }: Props) => {
         <TodoItem
           key={todo.id}
           todo={todo}
+          categories={categories}
           onToggle={onToggle}
           onUpdate={onUpdate}
           onDelete={onDelete}
