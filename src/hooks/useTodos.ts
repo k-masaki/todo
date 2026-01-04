@@ -116,6 +116,14 @@ export const useTodos = () => {
     completed: todos.filter(t => t.completed).length,
   }), [todos]);
 
+  const replaceAllTodos = useCallback((newTodos: Todo[]) => {
+    setTodos(newTodos);
+  }, []);
+
+  const getAllTodos = useCallback(() => {
+    return todos;
+  }, [todos]);
+
   return {
     todos: filteredTodos,
     filters,
@@ -125,5 +133,7 @@ export const useTodos = () => {
     deleteTodo,
     toggleTodo,
     stats,
+    replaceAllTodos,
+    getAllTodos,
   };
 };

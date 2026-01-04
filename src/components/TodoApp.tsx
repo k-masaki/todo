@@ -2,6 +2,7 @@ import { useTodos } from '../hooks/useTodos';
 import { TodoForm } from './TodoForm';
 import { FilterBar } from './FilterBar';
 import { TodoList } from './TodoList';
+import { DataManager } from './DataManager';
 import styles from './TodoApp.module.css';
 
 export const TodoApp = () => {
@@ -14,6 +15,8 @@ export const TodoApp = () => {
     deleteTodo,
     toggleTodo,
     stats,
+    replaceAllTodos,
+    getAllTodos,
   } = useTodos();
 
   return (
@@ -31,6 +34,7 @@ export const TodoApp = () => {
           onUpdate={updateTodo}
           onDelete={deleteTodo}
         />
+        <DataManager todos={getAllTodos()} onImport={replaceAllTodos} />
       </main>
     </div>
   );
