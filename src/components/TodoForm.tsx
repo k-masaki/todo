@@ -1,22 +1,23 @@
 import { useState } from 'react';
-import type { Category, Priority } from '../types/todo';
-import { CATEGORY_LABELS, PRIORITY_LABELS } from '../types/todo';
+import type { Priority, CategoryItem } from '../types/todo';
+import { PRIORITY_LABELS } from '../types/todo';
 import styles from './TodoForm.module.css';
 
 interface Props {
+  categories: CategoryItem[];
   onSubmit: (
     title: string,
-    category: Category,
+    categoryId: string,
     priority: Priority,
     description?: string,
     dueDate?: string
   ) => void;
 }
 
-export const TodoForm = ({ onSubmit }: Props) => {
+export const TodoForm = ({ categories, onSubmit }: Props) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState<Category>('personal');
+  const [categoryId, setCategoryId] = useState(categories[0]?.id || '');
   const [priority, setPriority] = useState<Priority>('medium');
   const [dueDate, setDueDate] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
@@ -27,7 +28,7 @@ export const TodoForm = ({ onSubmit }: Props) => {
 
     onSubmit(
       title.trim(),
-      category,
+      categoryId,
       priority,
       description.trim() || undefined,
       dueDate || undefined
@@ -35,7 +36,7 @@ export const TodoForm = ({ onSubmit }: Props) => {
 
     setTitle('');
     setDescription('');
-    setCategory('personal');
+    setCategoryId(categories[0]?.id || '');
     setPriority('medium');
     setDueDate('');
     setIsExpanded(false);
@@ -71,12 +72,12 @@ export const TodoForm = ({ onSubmit }: Props) => {
             <label className={styles.option}>
               <span>カテゴリ</span>
               <select
-                value={category}
-                onChange={e => setCategory(e.target.value as Category)}
+                value={categoryId}
+                onChange={e => setCategoryId(e.target.value)}
               >
-                {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
                   </option>
                 ))}
               </select>

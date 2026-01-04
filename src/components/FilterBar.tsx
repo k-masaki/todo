@@ -1,14 +1,15 @@
-import type { TodoFilters, Category, Priority, FilterStatus, SortBy } from '../types/todo';
-import { CATEGORY_LABELS, PRIORITY_LABELS } from '../types/todo';
+import type { TodoFilters, Priority, FilterStatus, SortBy, CategoryItem } from '../types/todo';
+import { PRIORITY_LABELS } from '../types/todo';
 import styles from './FilterBar.module.css';
 
 interface Props {
   filters: TodoFilters;
+  categories: CategoryItem[];
   onChange: (filters: TodoFilters) => void;
   stats: { total: number; active: number; completed: number };
 }
 
-export const FilterBar = ({ filters, onChange, stats }: Props) => {
+export const FilterBar = ({ filters, categories, onChange, stats }: Props) => {
   const updateFilter = <K extends keyof TodoFilters>(key: K, value: TodoFilters[K]) => {
     onChange({ ...filters, [key]: value });
   };
@@ -37,13 +38,13 @@ export const FilterBar = ({ filters, onChange, stats }: Props) => {
         <label className={styles.filter}>
           <span>カテゴリ</span>
           <select
-            value={filters.category}
-            onChange={e => updateFilter('category', e.target.value as Category | 'all')}
+            value={filters.categoryId}
+            onChange={e => updateFilter('categoryId', e.target.value)}
           >
             <option value="all">すべて</option>
-            {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
               </option>
             ))}
           </select>

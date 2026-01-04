@@ -1,6 +1,8 @@
-import type { Todo } from '../types/todo';
+import type { Todo, CategoryItem } from '../types/todo';
+import { DEFAULT_CATEGORIES } from '../types/todo';
 
 const STORAGE_KEY = 'todos';
+const CATEGORIES_KEY = 'categories';
 
 export const loadTodos = (): Todo[] => {
   try {
@@ -54,4 +56,22 @@ export const importTodos = (file: File): Promise<Todo[]> => {
     reader.onerror = () => reject(new Error('ファイルの読み込みに失敗しました'));
     reader.readAsText(file);
   });
+};
+
+export const loadCategories = (): CategoryItem[] => {
+  try {
+    const data = localStorage.getItem(CATEGORIES_KEY);
+    return data ? JSON.parse(data) : DEFAULT_CATEGORIES;
+  } catch {
+    console.error('Failed to load categories from localStorage');
+    return DEFAULT_CATEGORIES;
+  }
+};
+
+export const saveCategories = (categories: CategoryItem[]): void => {
+  try {
+    localStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories));
+  } catch {
+    console.error('Failed to save categories to localStorage');
+  }
 };

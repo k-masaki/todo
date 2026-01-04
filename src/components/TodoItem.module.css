@@ -74,28 +74,7 @@
 }
 
 .category {
-  background: #e8f4fd;
-  color: #2980b9;
-}
-
-.category.work {
-  background: #fdecea;
-  color: #c0392b;
-}
-
-.category.personal {
-  background: #e8f8f5;
-  color: #1abc9c;
-}
-
-.category.shopping {
-  background: #fef9e7;
-  color: #f39c12;
-}
-
-.category.other {
-  background: #f4f4f4;
-  color: #666;
+  /* Color is set dynamically via inline style */
 }
 
 .priority {
