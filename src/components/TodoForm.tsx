@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Priority, CategoryItem } from '../types/todo';
 import { PRIORITY_LABELS } from '../types/todo';
 import styles from './TodoForm.module.css';
@@ -17,10 +17,16 @@ interface Props {
 export const TodoForm = ({ categories, onSubmit }: Props) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [categoryId, setCategoryId] = useState(categories[0]?.id || '');
+  const [categoryId, setCategoryId] = useState('');
   const [priority, setPriority] = useState<Priority>('medium');
   const [dueDate, setDueDate] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    if (categories.length > 0 && !categoryId) {
+      setCategoryId(categories[0].id);
+    }
+  }, [categories, categoryId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
